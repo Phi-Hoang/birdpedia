@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// Bird is a representation of a bird
 type Bird struct {
 	Species     string `json:"species"`
 	Description string `json:"description"`
