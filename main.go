@@ -1,10 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	// The lib/pq driver is used for postgres
+	_ "github.com/lib/pq"
 )
 
 // The new router function creates the router and
@@ -33,9 +36,25 @@ func newRouter() *mux.Router {
 }
 
 func main() {
+	fmt.Println("Starting server...")
+	connString := "user=postgres password=phihdn dbname=bird_encyclopedia sslmode=disable"
+	db, err := sql.Open("postgres", connString)
+
+	if err != nil {
+		panic(err)
+	}
+	err = db.Ping()
+
+	if err != nil {
+		panic(err)
+	}
+
+	InitStore(&dbStore{db: db})
+
 	// The router is now formed by calling the `newRouter` constructor function
 	// that we defined above. The rest of the code stays the same
 	r := newRouter()
+	fmt.Println("Serving on port 8080")
 	http.ListenAndServe(":8080", r)
 }
 
