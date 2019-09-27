@@ -10,6 +10,15 @@ import (
 	_ "github.com/lib/pq"
 )
 
+const (
+	host     = "ec2-23-21-94-99.compute-1.amazonaws.com"
+	port     = 5432
+	user     = "enfqzakqkpshlx"
+	password = "0e8bc723f746d5a74d7791b0fb4d40f602a7d04c487ad7d57714a032bb790f1e"
+	dbname   = "dbddfo9bcjapo8"
+	sslmode  = "require" // disable/require
+)
+
 // The new router function creates the router and
 // returns it to us. We can now use this function
 // to instantiate and test the router outside of the main function
@@ -37,8 +46,8 @@ func newRouter() *mux.Router {
 
 func main() {
 	fmt.Println("Starting server...")
-	connString := "user=postgres password=phihdn dbname=bird_encyclopedia sslmode=disable"
-	db, err := sql.Open("postgres", connString)
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s", host, port, user, password, dbname, sslmode)
+	db, err := sql.Open("postgres", psqlInfo)
 
 	if err != nil {
 		panic(err)
